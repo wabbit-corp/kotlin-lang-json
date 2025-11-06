@@ -1,12 +1,11 @@
 package one.wabbit.lang.json
 
-import one.wabbit.parsing.EmptySpan
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import one.wabbit.parsing.EmptySpan
 
 class JsonSpec {
     private fun p(s: String) = JsonNode.parseWithEmptySpans(s)
-
 
     @Test
     fun `parse boolean`() {
@@ -123,64 +122,130 @@ class JsonSpec {
 
     @Test
     fun `parse simple object`() {
-        assertEquals(JsonNode.Object(listOf(
-            JsonNode.Field(JsonNode.String("a", EmptySpan), JsonNode.Number("1", EmptySpan)),
-            JsonNode.Field(JsonNode.String("b", EmptySpan), JsonNode.Number("2", EmptySpan)),
-            JsonNode.Field(JsonNode.String("c", EmptySpan), JsonNode.Number("3", EmptySpan))
-        ), EmptySpan), p("{ \"a\" : 1 , \"b\" : 2 , \"c\" : 3 }"))
+        assertEquals(
+            JsonNode.Object(
+                listOf(
+                    JsonNode.Field(
+                        JsonNode.String("a", EmptySpan),
+                        JsonNode.Number("1", EmptySpan),
+                    ),
+                    JsonNode.Field(
+                        JsonNode.String("b", EmptySpan),
+                        JsonNode.Number("2", EmptySpan),
+                    ),
+                    JsonNode.Field(JsonNode.String("c", EmptySpan), JsonNode.Number("3", EmptySpan)),
+                ),
+                EmptySpan,
+            ),
+            p("{ \"a\" : 1 , \"b\" : 2 , \"c\" : 3 }"),
+        )
     }
 
     @Test
     fun `EXT parse objects with single quote keys`() {
-        assertEquals(JsonNode.Object(listOf(
-            JsonNode.Field(JsonNode.String("a", EmptySpan), JsonNode.Number("1", EmptySpan)),
-            JsonNode.Field(JsonNode.String("b", EmptySpan), JsonNode.Number("2", EmptySpan)),
-            JsonNode.Field(JsonNode.String("c", EmptySpan), JsonNode.Number("3", EmptySpan))
-        ), EmptySpan), p("{ 'a' : 1 , 'b' : 2 , 'c' : 3 }"))
+        assertEquals(
+            JsonNode.Object(
+                listOf(
+                    JsonNode.Field(
+                        JsonNode.String("a", EmptySpan),
+                        JsonNode.Number("1", EmptySpan),
+                    ),
+                    JsonNode.Field(
+                        JsonNode.String("b", EmptySpan),
+                        JsonNode.Number("2", EmptySpan),
+                    ),
+                    JsonNode.Field(JsonNode.String("c", EmptySpan), JsonNode.Number("3", EmptySpan)),
+                ),
+                EmptySpan,
+            ),
+            p("{ 'a' : 1 , 'b' : 2 , 'c' : 3 }"),
+        )
     }
 
     @Test
     fun `EXT parse object with trailing commas`() {
-        assertEquals(JsonNode.Object(listOf(
-            JsonNode.Field(JsonNode.String("a", EmptySpan), JsonNode.Number("1", EmptySpan)),
-            JsonNode.Field(JsonNode.String("b", EmptySpan), JsonNode.Number("2", EmptySpan)),
-            JsonNode.Field(JsonNode.String("c", EmptySpan), JsonNode.Number("3", EmptySpan))
-        ), EmptySpan), p("{ \"a\" : 1 , \"b\" : 2 , \"c\" : 3 , }"))
+        assertEquals(
+            JsonNode.Object(
+                listOf(
+                    JsonNode.Field(
+                        JsonNode.String("a", EmptySpan),
+                        JsonNode.Number("1", EmptySpan),
+                    ),
+                    JsonNode.Field(
+                        JsonNode.String("b", EmptySpan),
+                        JsonNode.Number("2", EmptySpan),
+                    ),
+                    JsonNode.Field(JsonNode.String("c", EmptySpan), JsonNode.Number("3", EmptySpan)),
+                ),
+                EmptySpan,
+            ),
+            p("{ \"a\" : 1 , \"b\" : 2 , \"c\" : 3 , }"),
+        )
     }
 
     @Test
     fun `EXT parse object with missing commas`() {
-        assertEquals(JsonNode.Object(listOf(
-            JsonNode.Field(JsonNode.String("a", EmptySpan), JsonNode.Number("1", EmptySpan)),
-            JsonNode.Field(JsonNode.String("b", EmptySpan), JsonNode.Number("2", EmptySpan)),
-            JsonNode.Field(JsonNode.String("c", EmptySpan), JsonNode.Number("3", EmptySpan))
-        ), EmptySpan), p("{ \"a\" : 1 , \"b\" : 2 \"c\" : 3 , }"))
+        assertEquals(
+            JsonNode.Object(
+                listOf(
+                    JsonNode.Field(
+                        JsonNode.String("a", EmptySpan),
+                        JsonNode.Number("1", EmptySpan),
+                    ),
+                    JsonNode.Field(
+                        JsonNode.String("b", EmptySpan),
+                        JsonNode.Number("2", EmptySpan),
+                    ),
+                    JsonNode.Field(JsonNode.String("c", EmptySpan), JsonNode.Number("3", EmptySpan)),
+                ),
+                EmptySpan,
+            ),
+            p("{ \"a\" : 1 , \"b\" : 2 \"c\" : 3 , }"),
+        )
     }
 
     @Test
     fun `parse array`() {
-        assertEquals(JsonNode.Array(listOf(
-            JsonNode.Number("1", EmptySpan),
-            JsonNode.Number("2", EmptySpan),
-            JsonNode.Number("3", EmptySpan)
-        ), EmptySpan), p("[ 1 , 2 , 3 ]"))
+        assertEquals(
+            JsonNode.Array(
+                listOf(
+                    JsonNode.Number("1", EmptySpan),
+                    JsonNode.Number("2", EmptySpan),
+                    JsonNode.Number("3", EmptySpan),
+                ),
+                EmptySpan,
+            ),
+            p("[ 1 , 2 , 3 ]"),
+        )
     }
 
     @Test
     fun `EXT parse array with trailing commas`() {
-        assertEquals(JsonNode.Array(listOf(
-            JsonNode.Number("1", EmptySpan),
-            JsonNode.Number("2", EmptySpan),
-            JsonNode.Number("3", EmptySpan)
-        ), EmptySpan), p("[1,2,3,]"))
+        assertEquals(
+            JsonNode.Array(
+                listOf(
+                    JsonNode.Number("1", EmptySpan),
+                    JsonNode.Number("2", EmptySpan),
+                    JsonNode.Number("3", EmptySpan),
+                ),
+                EmptySpan,
+            ),
+            p("[1,2,3,]"),
+        )
     }
 
     @Test
     fun `EXT parse array with missing commas`() {
-        assertEquals(JsonNode.Array(listOf(
-            JsonNode.Number("1", EmptySpan),
-            JsonNode.Number("2", EmptySpan),
-            JsonNode.Number("3", EmptySpan)
-        ), EmptySpan), p("[1,2 3,]"))
+        assertEquals(
+            JsonNode.Array(
+                listOf(
+                    JsonNode.Number("1", EmptySpan),
+                    JsonNode.Number("2", EmptySpan),
+                    JsonNode.Number("3", EmptySpan),
+                ),
+                EmptySpan,
+            ),
+            p("[1,2 3,]"),
+        )
     }
 }
